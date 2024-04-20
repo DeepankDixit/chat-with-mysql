@@ -1,4 +1,5 @@
 # chat-with-mysql
+AI Database Chatbot: Interact with MySQL Using LangChain
 
 ## App Architecture
 
