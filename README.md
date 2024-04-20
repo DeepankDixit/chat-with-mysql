@@ -20,7 +20,7 @@ At a high-level, the steps of any SQL chain and agent are:
 
 ## What is a Chain?
 
-![image.png](attachment:image.png)
+<img width="1311" alt="image" src="https://github.com/DeepankDixit/chat-with-mysql/assets/22991058/f3abea1f-6915-4229-995c-86b146028bc3">
 [Reference](https://alejandro-ao.com/chat-with-mysql-using-python-and-langchain/)
 
 - A simple SQL chain takes a question, turns it into a SQL query, executes the query, and uses the result to answer the original question.
@@ -42,10 +42,10 @@ chain = (
     )
 ```
 
-- first runnable: We passed in the sql_chain that returns the sql query 
-- This runnable is going to return some vars as an output. i.e. in variable vars.
-- We can use those vars in other lambda methods : schema and response
-- For example: we can tweak the chain to print these returned variables in vars:
+- first runnable: We passed in the sql_chain that returns the SQL query 
+- This runnable is going to return some vars as an output. i.e., in variable vars.
+- We can use those vars in other lambda methods: schema and response
+- For example, we can tweak the chain to print these returned variables in vars:
 
 ```
 chain = (
@@ -61,16 +61,16 @@ chain = (
 
 ### It changes the app behavior in the following way -
 
-![image.png](attachment:image.png)
+<img width="1222" alt="image" src="https://github.com/DeepankDixit/chat-with-mysql/assets/22991058/1970a4f4-e182-45f1-b26a-67be7c5e7dda">
 
-- And in the terminal we see the variables printed as per the print statement:
+- And in the terminal, we see the variables printed as per the print statement:
 
 variables:  {'question': 'How many artists are there>', 'chat_history': [AIMessage(content='Hello! I am your SQL assistant. Ask me anything about your database.'), HumanMessage(content='How many artists are there>')], 'query': 'SELECT COUNT(*) AS NumberOfArtists FROM Artist;'}
 
 
 #### Note
-- Tried with "mixtral-8x7b-32768" from groq but it didn't seem to be able to prepare SQL queries as well as the GPT3.5 did.
-- The app has the LLM streaming capability: meaning that it shows the output being generated in real time, rather than having to wait until the whole response is generated. [*Reference*](https://alejandro-ao.com/how-to-use-streaming-in-langchain-and-streamlit/)
+I tried with "mixtral-8x7b-32768" from Groq, but it didn't seem to be able to prepare SQL queries as well as the GPT3.5 did.
+- The app has the LLM streaming capability, which shows the output being generated in real-time, rather than waiting until the whole response is generated. [*Reference*](https://alejandro-ao.com/how-to-use-streaming-in-langchain-and-streamlit/)
 
 ## Setting up the MySQL
 
@@ -78,7 +78,7 @@ I am using Chinook Database for MySQL for this demo: [Chinook_MySql.sql](https:/
 
 1. Download the Chinook database or any database you want to chat to
 2. Set up the MySQL database in your local environment so that we can chat with it
-    1. **Installing MySQL** (instrustions available online):
+    **Installing MySQL** (instructions available online):
 
     If you are on Mac:   
      
@@ -101,6 +101,6 @@ I am using Chinook Database for MySQL for this demo: [Chinook_MySql.sql](https:/
 
 1. Enter the db credentials and click on Connect 
 
-![image.png](attachment:image.png)
+<img width="1335" alt="image" src="https://github.com/DeepankDixit/chat-with-mysql/assets/22991058/c91c777c-3d9c-48cf-b588-07244e473a9e">
 
-2. ![image-2.png](attachment:image-2.png)
+2. ![image](https://github.com/DeepankDixit/chat-with-mysql/assets/22991058/8548a19d-e261-4a81-8877-bef537981ead)
