@@ -4,15 +4,15 @@
 
 **Most important bit:**
 
-We will not be using an Agent for this app. We are just using a Chain. In real-life you would be using an Agent for this task as that would be more sophisticated. But we will be working with SQL chains to see how well can they do for chatting with SQL task.
+We will not be using an Agent for this app. We are just using a Chain. In real life, you would be using an Agent for this task as that would be more sophisticated. But we will be working with SQL chains to see how well they can do for chatting with SQL tasks.
 
-Let's go over the basic ways to create a Q&A chain and agent over a SQL database. These systems allow us to ask a question about the data in a SQL database and get back a natural language answer. The main difference between the two is that our agent can query the database in a loop as many time as it needs to answer the question.
+Let's review the basic ways to create a Q&A chain and agent over a SQL database. These systems allow us to ask a question about the data in a SQL database and get back a natural language answer. The main difference between the two is that our agent can query the database in a loop as many times as it needs to answer the question.
 
-At a high-level, the steps of any SQL chain and agent are:
+At a high level, the steps of any SQL chain and agent are:
 
-1. Convert question to SQL query: Model converts user input to a SQL query.
+1. Convert question to SQL query: The model converts user input to an SQL query.
 2. Execute SQL query: Execute the SQL query.
-3. Answer the question: Model responds to user input using the query results.
+3. Answer the question: The model responds to user input using the query results.
 
 <img width="1346" alt="image" src="https://github.com/DeepankDixit/chat-with-mysql/assets/22991058/5d8c4185-5da8-42ec-bee5-27b07026a504">
 [Reference](https://python.langchain.com/docs/use_cases/sql/quickstart/)
@@ -22,6 +22,7 @@ At a high-level, the steps of any SQL chain and agent are:
 
 <img width="1311" alt="image" src="https://github.com/DeepankDixit/chat-with-mysql/assets/22991058/f3abea1f-6915-4229-995c-86b146028bc3">
 [Reference](https://alejandro-ao.com/chat-with-mysql-using-python-and-langchain/)
+
 
 - A simple SQL chain takes a question, turns it into a SQL query, executes the query, and uses the result to answer the original question.
 - The first step in a SQL chain or agent (we are only using SQL chain here, not agent) is to take the user input and convert it to a SQL query. 
@@ -69,7 +70,7 @@ variables:  {'question': 'How many artists are there>', 'chat_history': [AIMessa
 
 
 #### Note
-I tried with "mixtral-8x7b-32768" from Groq, but it didn't seem to be able to prepare SQL queries as well as the GPT3.5 did.
+- I tried with "mixtral-8x7b-32768" from Groq, but it didn't seem to be able to prepare SQL queries as well as the GPT3.5 did.
 - The app has the LLM streaming capability, which shows the output being generated in real-time, rather than waiting until the whole response is generated. [*Reference*](https://alejandro-ao.com/how-to-use-streaming-in-langchain-and-streamlit/)
 
 ## Setting up the MySQL
@@ -99,8 +100,7 @@ I am using Chinook Database for MySQL for this demo: [Chinook_MySql.sql](https:/
 
 ## App walkthrough
 
-1. Enter the db credentials and click on Connect 
+Enter the DB credentials and click on Connect.
 
 <img width="1335" alt="image" src="https://github.com/DeepankDixit/chat-with-mysql/assets/22991058/c91c777c-3d9c-48cf-b588-07244e473a9e">
-
-2. ![image](https://github.com/DeepankDixit/chat-with-mysql/assets/22991058/8548a19d-e261-4a81-8877-bef537981ead)
+![image](https://github.com/DeepankDixit/chat-with-mysql/assets/22991058/8548a19d-e261-4a81-8877-bef537981ead)
