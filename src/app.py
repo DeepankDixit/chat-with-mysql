@@ -1,8 +1,11 @@
 from dotenv import load_dotenv
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 from langchain_community.utilities import SQLDatabase
+from langchain_groq import ChatGroq
 import streamlit as st
 
 load_dotenv()
@@ -39,10 +42,55 @@ def get_sql_chain(db):
 
     prompt = ChatPromptTemplate.from_template(template)
     llm = ChatOpenAI(model="gpt-4-0125-preview")
+    # llm = ChatGroq(model="mixtral-8x7b-32768", temperature=0)
 
     def get_schema(_):
         return db.get_table_info() #returns the schema of the db 
 
+    #this is our chain that outputs the SQL query as per the prompt we are passing
+    return (
+        RunnablePassthrough.assign(schema=get_schema)
+        | prompt
+        | llm
+        | StrOutputParser()
+    )#in func get_response() we wanna put this chain inside of another chain that will execute the returned SQL query in the database, \
+    #and will read the results from the output, and report to us in natural language what the results are.
+
+
+def get_response(user_query: str, db: SQLDatabase, chat_history: list):
+    sql_chain = get_sql_chain(db)
+
+    template = """
+        You are a data analyst at a company. You are interacting with a user who is asking you questions about the company's database.
+        Based on the table schema below, question, sql query, and sql response, write a natural language response.
+        <SCHEMA>{schema}</SCHEMA>
+
+        Conversation History: {chat_history}
+        SQL Query: <SQL>{query}</SQL>
+        User question: {question}
+        SQL Response: {response}
+    """
+
+    prompt = ChatPromptTemplate.from_template(template)
+    llm = ChatOpenAI(model="gpt-4-0125-preview")
+    # llm = ChatGroq(model="mixtral-8x7b-32768", temperature=0)
+
+    chain = (
+        RunnablePassthrough.assign(query=sql_chain).assign(
+            schema=lambda _: db.get_table_info(),
+            response=lambda vars: db.run(vars["query"]),
+        )
+        | prompt
+        | llm 
+        | StrOutputParser()
+    )
+
+    return chain.stream({
+        "question": user_query,
+        "chat_history": chat_history
+    })
+
+    
 
 
 #initialize a persistent variable for chat-history
@@ -77,7 +125,7 @@ with st.sidebar:
             st.success("Connected to database!")
 
 for message in st.session_state.chat_history:
-    if isinstance(message, AIMessage):
+    if isinstance(message, AIMessage):#if the message is an instance of AIMessage
         with st.chat_message("AI"):
             st.markdown(message.content)
     elif isinstance(message, HumanMessage):
@@ -95,8 +143,15 @@ if user_query is not None and user_query != "":
 
     #if we were getting the response
     with st.chat_message("AI"):
-        response = "I don't know"
-        st.markdown(response)
+        #uncomment the sql_chain line + response line below. and comment the response = get_response() line to have the model output the sqlquery itself
+        # sql_chain = get_sql_chain(st.session_state.db)
+        # response = sql_chain.invoke({
+        #     "chat_history": st.session_state.chat_history,
+        #     "question": user_query
+        # })
+        # response = "I don't know"
+        response = st.write_stream(get_response(user_query, st.session_state.db, st.session_state.chat_history))
+        # st.markdown(response)
     
     st.session_state.chat_history.append(AIMessage(content=response)) #append AI response to the chat_history
 
