@@ -103,4 +103,6 @@ I am using Chinook Database for MySQL for this demo: [Chinook_MySql.sql](https:/
 Enter the DB credentials and click on Connect.
 
 <img width="1335" alt="image" src="https://github.com/DeepankDixit/chat-with-mysql/assets/22991058/c91c777c-3d9c-48cf-b588-07244e473a9e">
-![image](https://github.com/DeepankDixit/chat-with-mysql/assets/22991058/8548a19d-e261-4a81-8877-bef537981ead)
+
+![image](https://github.com/DeepankDixit/chat-with-mysql/assets/22991058/3418fed9-d579-4250-9641-5f4ee7bf7823)
+
